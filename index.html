@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #FAF7F2;
+    --text: #3E2F2F;
+    --accent: #6B4F4F;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  nav a {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* SECTIONS */
+  section {
+    min-height: 100vh;
+    padding: 8rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  h1, h2 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* PARALLAX */
+  .parallax {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* CONTACT */
+  .contact a {
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>
+</head>
+
+<body>
+
+<header id="header">
+  <nav>
+    <a href="#me">Me</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="me">
+  <h1>Hello, I'm Christina</h1>
+  <p>I create lettering, illustration, and design with a focus on warmth, clarity, and craft.</p>
+</section>
+
+<section id="work" class="parallax" style="background-image:url('your-image.jpg');">
+  <h2>My Work</h2>
+  <p>A curated selection of my lettering and illustration projects.</p>
+</section>
+
+<section id="contact" class="contact">
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+</section>
+
+<script>
+  /* HEADER SCROLL BEHAVIOR */
+  let lastScroll = 0;
+  const header = document.getElementById("header");
+
+  window.addEventListener("scroll", () => {
+    const current = window.pageYOffset;
+    if (current > lastScroll) {
+      header.style.transform = "translateY(-100%)";
+    } else {
+      header.style.transform = "translateY(0)";
+    }
+    lastScroll = current;
+  });
+
+  /* FADE-IN ON SCROLL */
+  const sections = document.querySelectorAll("section");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
