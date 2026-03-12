@@ -268,4 +268,105 @@
     <img loading="lazy" src="<!-- $$$ img13-bw.jpg $$$ -->">
     <img loading="lazy" src="<!-- $$$ img14-bw.jpg $$$ -->">
     <img loading="lazy" src="<!-- $$$ img15-bw.jpg $$$ -->">
-    <img loading="lazy" src="<!-- $$$ img16-bw.jpg $$$ -->
+    <img loading="lazy" src="<!-- $$$ img16-bw.jpg $$$ -->">
+    <img loading="lazy" src="<!-- $$$ img17-bw.jpg $$$ -->">
+    <img loading="lazy" src="<!-- $$$ img18-bw.jpg $$$ -->">
+    <img loading="lazy" src="<!-- $$$ img19-bw.jpg $$$ -->">
+    <img loading="lazy" src="<!-- $$$ img20-bw.jpg $$$ -->">
+  </div>
+</section>
+
+<div class="divider-text">• • •</div>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:<!-- $$$ your-email $$$ -->"><!-- $$$ your-email $$$ --></a></p>
+</section>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="">
+</div>
+
+<!-- BACK TO TOP -->
+<div id="topBtn">↑</div>
+
+<script>
+  /* HAMBURGER MENU */
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  hamburger.addEventListener("click", () => {
+    mobileMenu.style.display =
+      mobileMenu.style.display === "flex" ? "none" : "flex";
+  });
+
+  /* LOGO FADE + REPOSITION */
+  const logo = document.getElementById("logo");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 10) {
+      logo.classList.add("fade-out");
+      setTimeout(() => {
+        logo.classList.add("logo-left");
+        logo.classList.remove("fade-out");
+      }, 300);
+    } else {
+      logo.classList.add("fade-out");
+      setTimeout(() => {
+        logo.classList.remove("logo-left");
+        logo.classList.remove("fade-out");
+      }, 300);
+    }
+
+    document.getElementById("topBtn").style.display =
+      window.scrollY > 300 ? "block" : "none";
+  });
+
+  /* FADE-IN SECTIONS */
+  const sections = document.querySelectorAll("section");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(section => observer.observe(section));
+
+  /* LIGHTBOX */
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+
+  document.querySelectorAll(".grid img").forEach(img => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src.replace("-bw", "");
+      lightbox.style.display = "flex";
+    });
+  });
+
+  lightbox.addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+
+  /* BACK TO TOP */
+  document.getElementById("topBtn").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  /* HERO IMAGE SWITCH (NO FADE) */
+  const heroImg = document.querySelector(".hero-img");
+  const originalSrc = heroImg.src;
+  const hoverSrc = heroImg.getAttribute("data-hover");
+
+  heroImg.addEventListener("mouseenter", () => {
+    heroImg.src = hoverSrc;
+  });
+
+  heroImg.addEventListener("mouseleave", () => {
+    heroImg.src = originalSrc;
+  });
+</script>
+
+</body>
+</html>
