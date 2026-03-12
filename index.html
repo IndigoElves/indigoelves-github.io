@@ -26,7 +26,7 @@
     justify-content: center;
   }
 
-  /* CENTERED WRAPPER */
+  /* WRAPPER */
   .wrapper {
     width: 100%;
     max-width: var(--max-width);
@@ -44,17 +44,56 @@
     background: var(--bg);
     display: flex;
     justify-content: center;
-    transition: transform 0.3s ease;
+    align-items: center;
     z-index: 1000;
     border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.6s ease;
+  }
+
+  /* LOGO */
+  .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.6s ease;
+  }
+
+  .logo-left {
+    left: 20px;
+    transform: translateX(0);
+  }
+
+  .logo img {
+    height: 50px;
+  }
+
+  /* HAMBURGER */
+  .hamburger {
+    position: absolute;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* MOBILE MENU */
+  nav {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: var(--bg);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   }
 
   nav a {
-    margin: 0 1rem;
+    margin: 0.5rem 0;
     text-decoration: none;
     color: var(--text);
     font-weight: 500;
-    letter-spacing: 0.5px;
   }
 
   /* SECTIONS */
@@ -74,20 +113,13 @@
     transform: translateY(0);
   }
 
-  /* HERO ANIMATION */
-  #me {
-    animation: heroFade 1.4s ease forwards;
-  }
-
-  @keyframes heroFade {
-    0% { opacity: 0; transform: translateY(40px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  h1, h2 {
-    font-weight: 600;
-    margin-bottom: 1rem;
-    letter-spacing: -0.5px;
+  /* HERO IMAGE */
+  .hero-img {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 2rem;
   }
 
   /* TEXT DIVIDER */
@@ -137,7 +169,7 @@
     border-radius: 4px;
   }
 
-  /* BACK TO TOP BUTTON */
+  /* BACK TO TOP */
   #topBtn {
     position: fixed;
     bottom: 30px;
@@ -176,7 +208,15 @@
 <div class="wrapper">
 
 <header id="header">
-  <nav>
+  <div class="logo" id="logo">
+    <img src="<!-- $$$ your-logo.png $$$ -->" alt="Logo">
+  </div>
+
+  <div class="hamburger" id="hamburger">
+    ☰
+  </div>
+
+  <nav id="mobileMenu">
     <a href="#me">Me</a>
     <a href="#work">Work</a>
     <a href="#contact">Contact</a>
@@ -184,6 +224,8 @@
 </header>
 
 <section id="me">
+  <img class="hero-img" src="<!-- $$$ your-hero-image.jpg $$$ -->" alt="Hero Image">
+
   <h1><!-- $$$ Your Hero Title $$$ --></h1>
   <p><!-- $$$ Your Hero Subtitle $$$ --></p>
 </section>
@@ -195,7 +237,6 @@
   <p><!-- $$$ Your Work Section Intro $$$ --></p>
 
   <div class="grid">
-    <!-- Replace each src with your image paths -->
     <img loading="lazy" src="<!-- $$$ img1-bw.jpg $$$ -->">
     <img loading="lazy" src="<!-- $$$ img2-bw.jpg $$$ -->">
     <img loading="lazy" src="<!-- $$$ img3-bw.jpg $$$ -->">
@@ -233,29 +274,34 @@
   <img id="lightbox-img" src="">
 </div>
 
-<!-- BACK TO TOP BUTTON -->
+<!-- BACK TO TOP -->
 <div id="topBtn">↑</div>
 
 <script>
-  /* HEADER SCROLL BEHAVIOR */
-  let lastScroll = 0;
-  const header = document.getElementById("header");
+  /* HAMBURGER MENU */
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
 
-  window.addEventListener("scroll", () => {
-    const current = window.pageYOffset;
-    if (current > lastScroll) {
-      header.style.transform = "translateY(-100%)";
-    } else {
-      header.style.transform = "translateY(0)";
-    }
-    lastScroll = current;
-
-    // Show back-to-top button
-    document.getElementById("topBtn").style.display =
-      current > 300 ? "block" : "none";
+  hamburger.addEventListener("click", () => {
+    mobileMenu.style.display =
+      mobileMenu.style.display === "flex" ? "none" : "flex";
   });
 
-  /* FADE-IN ON SCROLL */
+  /* LOGO GLIDE */
+  const logo = document.getElementById("logo");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 10) {
+      logo.classList.add("logo-left");
+    } else {
+      logo.classList.remove("logo-left");
+    }
+
+    document.getElementById("topBtn").style.display =
+      window.scrollY > 300 ? "block" : "none";
+  });
+
+  /* FADE-IN SECTIONS */
   const sections = document.querySelectorAll("section");
 
   const observer = new IntersectionObserver(entries => {
@@ -268,14 +314,13 @@
 
   sections.forEach(section => observer.observe(section));
 
-  /* LIGHTBOX FUNCTIONALITY */
+  /* LIGHTBOX */
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
 
   document.querySelectorAll(".grid img").forEach(img => {
     img.addEventListener("click", () => {
-      const colorVersion = img.src.replace("-bw", "");
-      lightboxImg.src = colorVersion;
+      lightboxImg.src = img.src.replace("-bw", "");
       lightbox.style.display = "flex";
     });
   });
